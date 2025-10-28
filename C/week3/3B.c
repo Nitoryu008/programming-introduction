@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     q->next = p;
     p->next = NULL;
 
-  sorted:
+  sorted:;
   }
 
   for (p = sorted_list->next; p != NULL; p = p->next)
