@@ -58,47 +58,48 @@ void swap_values(struct node *a, struct node *b)
   b->count = temp_count;
 }
 
+int is_higher_priority(struct node *a, struct node *b)
+{
+  if (a == NULL)
+    return 0;
+  if (b == NULL)
+    return 1;
+
+  if (a->count > b->count)
+    return 1;
+  if (a->count < b->count)
+    return 0;
+
+  if (strcmp(a->word, b->word) < 0)
+    return 1;
+
+  return 0;
+}
+
 void sift(struct node *p)
 {
   if (p == NULL)
     return;
 
-  struct node *larger_child = NULL;
-
-  if (p->left != NULL && p->right == NULL)
+  struct node *priority_child = NULL;
+  if (is_higher_priority(p->left, p->right))
   {
-    if (p->left->count <= p->count)
-      return;
-    larger_child = p->left;
-  }
-  else if (p->left == NULL && p->right != NULL)
-  {
-    if (p->right->count <= p->count)
-      return;
-    larger_child = p->right;
-  }
-  else if (p->left != NULL && p->right != NULL)
-  {
-    if (p->left->count > p->right->count)
-    {
-      larger_child = p->left;
-    }
-    else
-    {
-      larger_child = p->right;
-    }
-    if (larger_child->count <= p->count)
-      return;
+    priority_child = p->left;
   }
   else
+  {
+    priority_child = p->right;
+  }
+
+  if (priority_child == NULL)
   {
     return;
   }
 
-  if (larger_child != NULL)
+  if (is_higher_priority(priority_child, p))
   {
-    swap_values(p, larger_child);
-    sift(larger_child);
+    swap_values(p, priority_child);
+    sift(priority_child);
   }
 }
 
